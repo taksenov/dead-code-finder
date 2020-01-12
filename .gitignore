@@ -29,3 +29,6 @@ yarn-error.log*
 
 # client Build     
 /client/build
+
+# testApp
+/testApp
