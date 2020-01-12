@@ -1,6 +1,6 @@
 {
   "name": "dead-code-finder",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "description": "Find dead JS/CSS code in the ReactJS app.",
   "main": "index.js",
