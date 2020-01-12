@@ -1,0 +1,11 @@
+{
+  "name": "dead-code-finder",
+  "version": "0.0.1",
+  "description": "Find dead JS/CSS code in the ReactJS app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "taksenov@gmail.com",
+  "license": "MIT"
+}
