@@ -1,0 +1,93 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "jsx": true,
+    "useJSXTextNode": true
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+
+    "no-shadow": "off",
+    "no-confusing-arrow": "off",
+    "react/jsx-curly-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "import/no-unresolved": "off",
+    "react/display-name": "off",
+    "operator-linebreak": "off",
+    "no-param-reassign": "off",
+    "arrow-body-style": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "no-unneeded-ternary": "off",
+    "object-curly-newline": "off",
+    "consistent-return": "off",
+    "@typescript-eslint/ban-ts-ignore": "warn",
+    "react/no-did-update-set-state": "off",
+    "react/jsx-closing-tag-location": "off",
+    "function-paren-newline": "off",
+    
+
+    "react/state-in-constructor": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx", ".tsx"]
+      }
+    ],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-var-requires": "error",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "max-classes-per-file": "off",
+    "prefer-const": "off",
+    "arrow-parens": "off",
+    "react/prop-types": "off",
+    "react/prefer-stateless-function": "off",
+    "react/jsx-props-no-spreading": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "curly": ["error", "all"],
+    "no-mixed-operators": "error",
+    "no-console": "warn",
+    "no-process-exit": "error",
+    "import/first": "error",
+    "import/order": "off",
+    "import/newline-after-import": "error",
+    "import/no-amd": "error",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "peerDependencies": true,
+        "optionalDependencies": false
+      }
+    ],
+    "import/no-mutable-exports": "error",
+    "import/no-named-default": "error",
+    "import/no-named-export": "off",
+    "import/no-self-import": "error",
+    "import/prefer-default-export": "off"
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
+  }
+}
