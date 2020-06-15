@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 // const Parameters = require('./Parameters');
-import Parameters from './Params';
+import Parameters from '../Params';
 
 const execParams = process.argv;
 const checkParams = new Parameters();
@@ -12,7 +12,6 @@ if (helpParam.status === true) {
   console.log(helpParam.body);
   process.exit();
 }
-
 const inputParam = checkParams.handleCheckWorkParams('--input=', execParams);
 const outputParam = checkParams.handleCheckWorkParams('--output=', execParams);
 const deleteParam = checkParams.handleCheckWorkParams('--delete', execParams);
@@ -35,8 +34,7 @@ if (outputParam.status) {
 // установка переменных из параметров
 const inDir = inputParam.body;
 const outDir = outputParam.body;
-// const isDelete = deleteParam.status;
-const isDelete = false;
+const isDelete = deleteParam.status;
 // установка переменных из параметров
 
 // handlers for file sorting programs ============================================================
