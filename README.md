@@ -1,6 +1,13 @@
 # Серверное приложение dead-code-finder
 
-Используется `NodeJS`
+Используется `ts-node`
+
+Команды запуска:
+
+```
+npm i
+npx ts-node ./scripts/main.ts --help
+```
 
 ## Разработка
 

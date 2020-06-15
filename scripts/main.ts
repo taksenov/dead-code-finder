@@ -1,8 +1,7 @@
-import Parameters from './Params';
+import * as fs from 'fs';
+import * as path from 'path';
 
-const fs = require('fs');
-const path = require('path');
-// const Parameters = require('./Parameters');
+import Parameters from './Params';
 
 const execParams = process.argv;
 const checkParams = new Parameters();
@@ -13,8 +12,6 @@ if (helpParam.status === true) {
   console.log(helpParam.body);
   process.exit();
 }
-
-let some_shit = '';
 
 const inputParam = checkParams.handleCheckWorkParams('--input=', execParams);
 const outputParam = checkParams.handleCheckWorkParams('--output=', execParams);
@@ -43,8 +40,8 @@ const isDelete = false;
 // установка переменных из параметров
 
 // handlers for file sorting programs ============================================================
-let dirsArr = [];
-let copyPromices = [];
+let dirsArr: any[] = [];
+let copyPromices: any[] = [];
 
 /**
  * Вспомогательная функция, набивает массив промисами обрабатывающими поток чтения-записи
@@ -52,7 +49,7 @@ let copyPromices = [];
  * @param {string} source               --откуда копировать
  * @param {string} dest                 --куда копировать
  */
-function copyFile(source, dest) {
+function copyFile(source: string, dest: string) {
   return new Promise((resolve, reject) => {
     const stream = fs.createReadStream(source).pipe(fs.createWriteStream(dest));
 
@@ -63,12 +60,12 @@ function copyFile(source, dest) {
       reject(new Error('COPY_FILE_ERROR'));
     });
   });
-} //copyFile
+}
 
-const handleCombineMusicCollection = (base, outBase) => {
+const handleCombineMusicCollection = (base: string, outBase: string) => {
   return new Promise((resolve, reject) => {
     try {
-      const recurFunc = (base, outBase) => {
+      const recurFunc = (base: string, outBase: string) => {
         const files = fs.readdirSync(base);
 
         let firstLetterTemp = '';
@@ -110,16 +107,16 @@ const handleCombineMusicCollection = (base, outBase) => {
       reject(new Error('HANDLE_COMBINE_MUSIC_COLLECTION_ERROR'));
     }
   });
-}; //handleCombineMusicCollection
+};
 
-const handleDeleteFilesInInputDir = (base, deleteFlag) => {
+const handleDeleteFilesInInputDir = (base: string, deleteFlag: boolean) => {
   return new Promise((resolve, reject) => {
     try {
       if (!deleteFlag) {
         resolve();
         return;
       }
-      const recurFunc = base => {
+      const recurFunc = (base: string) => {
         let files = fs.readdirSync(base);
 
         files.forEach(item => {
@@ -140,9 +137,9 @@ const handleDeleteFilesInInputDir = (base, deleteFlag) => {
       reject(new Error('HANDLE_DELETE_FILES_IN_INPUT_DIR_ERROR'));
     }
   });
-}; //handleDeleteFilesInInputDir
+};
 
-const handleDeleteInputDir = base => {
+const handleDeleteInputDir = (base: string) => {
   return new Promise((resolve, reject) => {
     try {
       if (!base) {
@@ -150,12 +147,13 @@ const handleDeleteInputDir = base => {
         return;
       }
 
-      const cleanEmptyFoldersRecursively = folder => {
-        var files = fs.readdirSync(folder);
+      const cleanEmptyFoldersRecursively = (folder: string) => {
+        let files = fs.readdirSync(folder);
 
         if (files.length > 0) {
-          files.forEach(function (file) {
-            var fullPath = path.join(folder, file);
+          files.forEach(file => {
+            let fullPath = path.join(folder, file);
+
             cleanEmptyFoldersRecursively(fullPath);
           });
 
@@ -166,7 +164,8 @@ const handleDeleteInputDir = base => {
 
         if (files.length === 0) {
           fs.rmdirSync(folder);
-          return;
+
+          return 0;
         }
       };
 
@@ -184,7 +183,7 @@ const handleDeleteInputDir = base => {
 handleCombineMusicCollection(inDir, outDir);
 
 Promise.all(copyPromices).then(() => {
-  handleDeleteFilesInInputDir(inDir, isDelete).then(data => {
+  handleDeleteFilesInInputDir(inDir, isDelete).then((data: any) => {
     handleDeleteInputDir(data);
   });
 });

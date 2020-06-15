@@ -1,19 +1,37 @@
 /**
+ * Интерфейс с описанием типов возвращаемого результат
+ *
+ * @interface IParamsResult
+ */
+interface IParamsResult {
+  status: boolean;
+  body?: string;
+}
+
+/**
  * Проверка параметров запуска
  *
  * @type {Class}
  * return {Object} = {status:@boolean, body:@string}
  */
 class Parameters {
-  _setParam(checkParam, params) {
-    let checkLength, thisParam;
+  private setParam = (checkParam: string | any[], params: string | any[]) => {
+    let checkLength;
+    let thisParam;
+
     checkLength = checkParam.length;
     thisParam = params.slice(checkLength);
-    return thisParam;
-  }
 
-  _checkParams(checkParam, params, message) {
-    let unknownResult;
+    return thisParam;
+  };
+
+  private checkParams: (c: string, p: string[], m: string) => IParamsResult = (
+    checkParam: string,
+    params: string[],
+    message: string,
+  ) => {
+    let result = { status: false, body: undefined };
+
     for (let i = 0, maxLength = params.length; i < maxLength; i++) {
       if (params[i].indexOf(checkParam) !== -1) {
         switch (checkParam) {
@@ -25,12 +43,12 @@ class Parameters {
           case '--input=':
             return {
               status: true,
-              body: this._setParam(checkParam, params[i]),
+              body: this.setParam(checkParam, params[i]),
             };
           case '--output=':
             return {
               status: true,
-              body: this._setParam(checkParam, params[i]),
+              body: this.setParam(checkParam, params[i]),
             };
           case '--delete':
             return { status: true, body: 'DELETE_INPUT_FOLDER' };
@@ -38,15 +56,18 @@ class Parameters {
             return { status: false, body: undefined };
         }
       } else if (params[i].indexOf(checkParam) === -1) {
-        unknownResult = { status: false, body: undefined };
+        result = { status: false, body: undefined };
       }
     }
 
-    return unknownResult;
-  }
+    return result;
+  };
 
-  handleCheckHelpParam(checkParam, execParams) {
-    let obj = this._checkParams(
+  handleCheckHelpParam(
+    checkParam: string,
+    execParams: string[],
+  ): IParamsResult {
+    let obj = this.checkParams(
       checkParam,
       execParams,
       `Правила использования:
@@ -64,8 +85,11 @@ class Parameters {
     return obj;
   }
 
-  handleCheckWorkParams(checkParam, execParams) {
-    let obj = this._checkParams(checkParam, execParams, '');
+  handleCheckWorkParams(
+    checkParam: string,
+    execParams: string[],
+  ): IParamsResult {
+    let obj = this.checkParams(checkParam, execParams, '');
 
     return obj;
   }
