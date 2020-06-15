@@ -33,7 +33,7 @@
     "no-unneeded-ternary": "off",
     "object-curly-newline": "off",
     "consistent-return": "off",
-    "@typescript-eslint/ban-ts-ignore": "warn",
+    // "@typescript-eslint/ban-ts-ignore": "warn",
     "react/no-did-update-set-state": "off",
     "react/jsx-closing-tag-location": "off",
     "function-paren-newline": "off",

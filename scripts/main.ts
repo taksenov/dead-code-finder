@@ -1,7 +1,8 @@
+import Parameters from './Params';
+
 const fs = require('fs');
 const path = require('path');
 // const Parameters = require('./Parameters');
-import Parameters from './Params';
 
 const execParams = process.argv;
 const checkParams = new Parameters();
@@ -12,6 +13,8 @@ if (helpParam.status === true) {
   console.log(helpParam.body);
   process.exit();
 }
+
+let some_shit = '';
 
 const inputParam = checkParams.handleCheckWorkParams('--input=', execParams);
 const outputParam = checkParams.handleCheckWorkParams('--output=', execParams);
