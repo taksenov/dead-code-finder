@@ -37,7 +37,6 @@
     "react/no-did-update-set-state": "off",
     "react/jsx-closing-tag-location": "off",
     "function-paren-newline": "off",
-    
 
     "react/state-in-constructor": "off",
     "react/jsx-filename-extension": [

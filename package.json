@@ -7,7 +7,24 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["ast", "dead CSS code", "dead JS code", "csstree"],
+  "keywords": [
+    "ast",
+    "dead CSS code",
+    "dead JS code",
+    "csstree"
+  ],
   "author": "taksenov@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "postcss-scss": "^2.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^2.5.1"
+  }
 }
