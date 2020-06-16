@@ -8,11 +8,16 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node"
   },
-  "keywords": ["ast", "dead CSS code", "dead JS code", "csstree"],
+  "keywords": [
+    "ast",
+    "dead CSS code",
+    "dead JS code",
+    "csstree"
+  ],
   "author": "taksenov@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "esm": "^3.2.25",
+    "postcss": "^7.0.32",
     "postcss-scss": "^2.1.1"
   },
   "devDependencies": {

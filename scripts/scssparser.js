@@ -1,4 +1,4 @@
-import scssParse from 'postcss-scss/lib/scss-parse';
+const scssParse = require('postcss-scss/lib/scss-parse');
 
 const myCss = `
 // WebcamInput
@@ -117,4 +117,44 @@ d
 // ============
 `;
 
-console.log(scssParse(myCss));
+const myCss2 = `
+
+.inputBorder {
+  border: 1px solid rgba(34, 36, 38, 0.35) !important;
+
+ // wwww
+  &:focus {
+/* dfssdhddj */
+    border: 1px solid rgba(34, 36, 38, 1) !important;
+//    border: 1px solid rgba(34, 36, 38, 1) !important;
+
+
+  }
+}
+
+
+`;
+
+// console.dir(scssParse(myCss));
+const AST = scssParse(myCss);
+// const AST = scssParse(myCss2);
+
+let selectors = [];
+
+AST.walkRules(/^\D/, rule => {
+  const { parent } = rule;
+  const { type: parentType } = parent;
+
+  let { selector } = rule;
+
+  // console.log('rule=', rule);
+  // console.log('selector=', selector);
+  // console.log('parentType=', parentType);
+
+  if (parentType === 'root') {
+    selector = selector.replace(/\n/g, '');
+    selectors.push(...selector.split(','));
+  }
+});
+
+console.log(selectors);

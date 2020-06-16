@@ -14,13 +14,13 @@ interface IParamsResult {
  * @type {Class}
  * return {Object} = {status:@boolean, body:@string}
  */
-class Parameters {
-  private setParam = (checkParam: string | any[], params: string | any[]) => {
-    let checkLength;
-    let thisParam;
-
-    checkLength = checkParam.length;
-    thisParam = params.slice(checkLength);
+class Params {
+  private setParam: (c: string, p: string) => string = (
+    checkParam: string,
+    params: string,
+  ) => {
+    const checkLength = checkParam.length;
+    const thisParam = params.slice(checkLength);
 
     return thisParam;
   };
@@ -30,30 +30,35 @@ class Parameters {
     params: string[],
     message: string,
   ) => {
-    let result = { status: false, body: undefined };
+    let result: IParamsResult = { status: false, body: undefined };
 
     for (let i = 0, maxLength = params.length; i < maxLength; i++) {
       if (params[i].indexOf(checkParam) !== -1) {
         switch (checkParam) {
           case '--help':
-            return {
+            result = {
               status: true,
               body: message,
             };
+            break;
           case '--input=':
-            return {
+            result = {
               status: true,
               body: this.setParam(checkParam, params[i]),
             };
+            break;
           case '--output=':
-            return {
+            result = {
               status: true,
               body: this.setParam(checkParam, params[i]),
             };
+            break;
           case '--delete':
-            return { status: true, body: 'DELETE_INPUT_FOLDER' };
+            result = { status: true, body: 'DELETE_INPUT_FOLDER' };
+            break;
           default:
-            return { status: false, body: undefined };
+            result = { status: false, body: undefined };
+            break;
         }
       } else if (params[i].indexOf(checkParam) === -1) {
         result = { status: false, body: undefined };
@@ -67,19 +72,16 @@ class Parameters {
     checkParam: string,
     execParams: string[],
   ): IParamsResult {
-    let obj = this.checkParams(
+    const obj = this.checkParams(
       checkParam,
       execParams,
       `Правила использования:
-    --input=PATH_NAME    -- указывается полный путь к каталогу, который требует сортировки;
-    --output=PATH_NAME   -- указывается полный путь к каталогу, в котором будет отсортированная музыка;
-    --delete             -- удалить каталог input;
+    --input=PATH_NAME    -- указывается полный путь к каталогу, который требует проверки;
     --help               -- справка.
 
     Последовательность установки параметров любая.
     Параметр '--help' имеет максимальный приоритет.
-    Не документированные параметры игнорируются.
-    Сортируются файлы с расширением MP3.`,
+    Не документированные параметры игнорируются.`,
     );
 
     return obj;
@@ -89,10 +91,10 @@ class Parameters {
     checkParam: string,
     execParams: string[],
   ): IParamsResult {
-    let obj = this.checkParams(checkParam, execParams, '');
+    const obj = this.checkParams(checkParam, execParams, '');
 
     return obj;
   }
 }
 
-export default Parameters;
+export default Params;
