@@ -1,11 +1,14 @@
 // IDEA:
-// Запуск = npx ts-node ./scripts/main.ts --input=/Users/taksenov/work/my/dead-code-finder/testApp/
+// Запуск
+// macOS = npx ts-node ./src/main.ts --input=/Users/taksenov/work/my/dead-code-finder/testApp/
+// linux = npx ts-node ./src/main.ts --input=/home/taksenov/work/my/dead-code-finder/testApp/
 
 // import * as fs from 'fs';
 // import * as path from 'path';
 
 import Params from './Params';
 import collectFiles from './CollectFiles';
+import definedClassesFromSCSS from './DefinedClassesFromSCSS';
 
 const execParams = process.argv;
 const checkParams = new Params();
@@ -30,3 +33,6 @@ let filesArr: string[] = [];
 
 filesArr = collectFiles(inDir as string, '.scss');
 console.log(filesArr);
+
+const selectors = definedClassesFromSCSS(filesArr[0]);
+console.log(selectors);

@@ -14,6 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "downlevelIteration": true,
+    "typeRoots": ["./node_modules/@types", "./src/definitely/@types"],
     "jsx": "react"
   },
   "include": ["src"]
