@@ -1,5 +1,8 @@
+/* eslint-disable prefer-object-spread */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-useless-constructor */
+
+// @ts-nocheck
 
 // import * as fs from 'fs';
 
@@ -8,6 +11,8 @@ import {
   TSESTreeOptions,
   AST,
 } from '@typescript-eslint/typescript-estree';
+
+import Traverser from 'eslint/lib/shared/traverser';
 
 const tsxData = `
 import React from 'react';
@@ -134,8 +139,70 @@ const opts = {
   useJSXTextNode: false,
   jsx: true,
 };
-const results = parseSource(tsxData, opts);
+const fakeAst = parseSource(tsxData, opts);
 
-console.log(results);
+// console.log(fakeAst);
+
+const traverser = new Traverser();
+// const fakeAst = {
+//   type: 'Program',
+//   body: [
+//     {
+//       type: 'ClassDeclaration',
+//       id: {
+//         type: 'Identifier',
+//       },
+//       superClass: null,
+//       body: {
+//         type: 'ClassBody',
+//         body: [],
+//       },
+//       experimentalDecorators: [
+//         {
+//           type: 'Decorator',
+//           expression: {},
+//         },
+//       ],
+//     },
+//   ],
+// };
+
+// fakeAst.body[0].parent = fakeAst;
+
+const visited = [];
+
+// with 'visitorKeys' option to traverse decorators.
+traverser.traverse(fakeAst, {
+  enter: (node: any) => {
+    if (node.type === 'JSXAttribute') {
+      const { name } = node;
+      const { type, name: innerName } = name;
+
+      if (type === 'JSXIdentifier' && innerName === 'className') {
+        // TODO: Собрать информаци об использованном внутри классе.
+        // IDEA: Обязательно нужно учесть использование classnames
+
+        // JSXExpressionContainer"
+        // "MemberExpression"
+        // "Identifier"
+        // "styles"
+        // "Identifier"
+        // "noHorizontalMarginsForMobile"
+        // false
+
+        console.log('NODE JSXElement=', node);
+      }
+    }
+
+    visited.push(node.type);
+  },
+  visitorKeys: Object.assign({}, Traverser.DEFAULT_VISITOR_KEYS, {
+    ClassDeclaration: Traverser.DEFAULT_VISITOR_KEYS.ClassDeclaration.concat([
+      'experimentalDecorators',
+    ]),
+  }),
+});
+
+// console.log('visited=', visited);
 
 export default parseSource;
