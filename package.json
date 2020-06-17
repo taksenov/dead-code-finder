@@ -1,6 +1,6 @@
 {
   "name": "dead-code-finder",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "description": "Find dead JS/CSS code in the ReactJS app.",
   "main": "index.js",
@@ -8,12 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node"
   },
-  "keywords": [
-    "ast",
-    "dead CSS code",
-    "dead JS code",
-    "csstree"
-  ],
+  "keywords": ["ast", "dead CSS code", "dead JS code", "csstree"],
   "author": "taksenov@gmail.com",
   "license": "MIT",
   "dependencies": {
