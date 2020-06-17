@@ -110,6 +110,10 @@ d
     justify-content: center;
   }
 
+  .someShit {
+    margin-bottom: 228px;
+  }
+
   .headerHeight {
     height: unset;
   }
@@ -133,6 +137,35 @@ const myCss2 = `
 }
 
 
+@media screen and (max-width: 768px) {
+  .contentNoPaddings.contentNoPaddings {
+    padding: 0 !important;
+  }
+
+  .rowNoPaddings.rowNoPaddings {
+    padding: 0 !important;
+  }
+
+  .columnNoPaddings.columnNoPaddings {
+    padding: 0 !important;
+  }
+
+  .actionButtons {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .someShit {
+    margin-bottom: 228px;
+  }
+
+  .headerHeight {
+    height: unset;
+  }
+}
+
 `;
 
 // console.dir(scssParse(myCss));
@@ -151,10 +184,14 @@ AST.walkRules(/^\D/, rule => {
   // console.log('selector=', selector);
   // console.log('parentType=', parentType);
 
-  if (parentType === 'root') {
+  if (parentType === 'root' || parentType === 'atrule') {
     selector = selector.replace(/\n/g, '');
+    [, selector] = selector.split('.');
+
     selectors.push(...selector.split(','));
   }
+
+  selectors = [...new Set(selectors)];
 });
 
 console.log(selectors);
