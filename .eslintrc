@@ -33,11 +33,10 @@
     "no-unneeded-ternary": "off",
     "object-curly-newline": "off",
     "consistent-return": "off",
-    "@typescript-eslint/ban-ts-ignore": "warn",
+    // "@typescript-eslint/ban-ts-ignore": "warn",
     "react/no-did-update-set-state": "off",
     "react/jsx-closing-tag-location": "off",
     "function-paren-newline": "off",
-    
 
     "react/state-in-constructor": "off",
     "react/jsx-filename-extension": [
@@ -64,10 +63,12 @@
     "comma-dangle": ["error", "always-multiline"],
     "curly": ["error", "all"],
     "no-mixed-operators": "error",
-    "no-console": "warn",
-    "no-process-exit": "error",
+    "no-console": "off",
+    "no-process-exit": "off",
     "import/first": "error",
     "import/order": "off",
+    "import/extensions": "off",
+    "no-plusplus": "off",
     "import/newline-after-import": "error",
     "import/no-amd": "error",
     "import/no-extraneous-dependencies": [
@@ -82,6 +83,7 @@
     "import/no-named-default": "error",
     "import/no-named-export": "off",
     "import/no-self-import": "error",
+    "no-lonely-if": "off",
     "import/prefer-default-export": "off"
   },
   "settings": {
