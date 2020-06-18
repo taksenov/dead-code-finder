@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-useless-constructor */
 
-// @ts-nocheck
-
 // import * as fs from 'fs';
 
 import {
