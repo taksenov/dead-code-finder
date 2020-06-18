@@ -1,7 +1,3 @@
-/* eslint-disable prefer-object-spread */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable no-useless-constructor */
-
 import * as fs from 'fs';
 
 import {
@@ -96,6 +92,7 @@ const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
         });
       }
     },
+    // eslint-disable-next-line prefer-object-spread
     visitorKeys: Object.assign({}, Traverser.DEFAULT_VISITOR_KEYS, {
       ClassDeclaration: Traverser.DEFAULT_VISITOR_KEYS.ClassDeclaration.concat([
         'experimentalDecorators',
