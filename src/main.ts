@@ -8,7 +8,8 @@
 
 import Params from './Params';
 import collectFiles from './CollectFiles';
-import definedClassesFromSCSS from './DefinedClassesFromSCSS';
+// import definedClassesFromSCSS from './DefinedClassesFromSCSS';
+import usedClassesFromTSX from './UsedClassesFromTSX';
 
 const execParams = process.argv;
 const checkParams = new Params();
@@ -29,10 +30,18 @@ if (!inputParam.status) {
 
 const inDir = inputParam.body;
 
-let filesArr: string[] = [];
+// let scssFilesArr: string[] = [];
+let tsxFilesArr: string[] = [];
 
-filesArr = collectFiles(inDir as string, '.scss');
-console.log(filesArr);
+// scssFilesArr = collectFiles(inDir as string, '.scss');
+// console.log(scssFilesArr);
 
-const selectors = definedClassesFromSCSS(filesArr[0]);
-console.log(selectors);
+// const selectors = definedClassesFromSCSS(scssFilesArr[0]);
+// console.log(selectors);
+
+tsxFilesArr = collectFiles(inDir as string, '.tsx');
+console.log(tsxFilesArr);
+
+const selectors = usedClassesFromTSX(tsxFilesArr[0]);
+console.log(selectors[0].imports);
+console.log(selectors[0].classes);

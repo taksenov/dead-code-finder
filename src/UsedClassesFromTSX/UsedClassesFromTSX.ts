@@ -49,6 +49,7 @@ const parseSource = (
  * @param {string} filepath
  */
 // TODO: Типизировать вывод функции
+// TODO: Переименовать, TSX тут не кместу, лучше JS
 const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
   const sourceCode = fs.readFileSync(filepath, 'utf-8');
 
@@ -56,31 +57,44 @@ const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
 
   const traverser = new Traverser();
 
-  const visited: any[] = [];
+  let classes: any[] = [];
+  let imports: any[] = [];
+  let usedClasses: any[] = [];
 
   traverser.traverse(AST, {
     enter: (node: TSESTree.Node) => {
-      if (node.type === 'JSXAttribute') {
-        const { name } = node;
-        const { type, name: innerName } = name;
+      if (node.type === 'ImportDeclaration') {
+        const { source, specifiers } = node;
+        const { value = '' } = source;
+        const stylesFilename = String(value);
+        const [spec] = specifiers;
+        const { local } = spec;
+        const { name } = local;
 
-        if (type === 'JSXIdentifier' && innerName === 'className') {
-          // TODO: Собрать информаци об использованном внутри классе.
-          // IDEA: Обязательно нужно учесть использование classnames
-
-          // JSXExpressionContainer"
-          // "MemberExpression"
-          // "Identifier"
-          // "styles"
-          // "Identifier"
-          // "noHorizontalMarginsForMobile"
-          // false
-
-          console.log('NODE JSXElement=', node);
+        if (stylesFilename.includes('.scss')) {
+          imports = [
+            ...imports,
+            { stylesFilename, importVariable: name, file: filepath },
+          ];
         }
       }
 
-      visited.push(node.type);
+      if (node.type === 'MemberExpression') {
+        const { object, property } = node;
+        const { name: importStyleName } = object as TSESTree.Identifier;
+        const { name: usedClassName } = property as TSESTree.Identifier;
+
+        imports.forEach(item => {
+          const { importVariable } = item;
+
+          if (importStyleName === importVariable) {
+            classes = [
+              ...classes,
+              { usedClassName, importStyleName, file: filepath },
+            ];
+          }
+        });
+      }
     },
     visitorKeys: Object.assign({}, Traverser.DEFAULT_VISITOR_KEYS, {
       ClassDeclaration: Traverser.DEFAULT_VISITOR_KEYS.ClassDeclaration.concat([
@@ -89,8 +103,9 @@ const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
     }),
   });
 
-  // console.log('visited=', visited);
-  return visited;
+  usedClasses = [...usedClasses, { imports, classes }];
+
+  return usedClasses;
 };
 
 export default usedClassesFromTSX;
