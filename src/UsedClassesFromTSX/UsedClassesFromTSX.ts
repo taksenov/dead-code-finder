@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-useless-constructor */
 
-// import * as fs from 'fs';
+import * as fs from 'fs';
 
 import {
   parse as parseToTree,
@@ -10,112 +10,25 @@ import {
   TSESTree,
   AST,
 } from '@typescript-eslint/typescript-estree';
-
 import Traverser from 'eslint/lib/shared/traverser';
 
-const tsxData = `
-import React from 'react';
-import { Grid } from 'semantic-ui-react';
-import moment from 'moment-timezone';
+// Настройки (опции) для парсинга
+const opts = {
+  range: true,
+  loc: false,
+  tokens: false,
+  comment: false,
+  useJSXTextNode: false,
+  jsx: true,
+};
 
-import HeaderCompTabletMarkup from '../HeaderCompTabletMarkup';
-import HeaderMobileMarkup from '../HeaderMobileMarkup';
-
-import setOperatingTimeType from '../../utils/setOperatingTimeType.helper';
-
-import styles from './Header.module.scss';
-
-import logoImage from './assets/images/logo.png';
-
-moment.tz.setDefault('Europe/Moscow');
-moment.locale('ru');
-
-interface IHeaderProps {
-  authData: any;
-}
-
-class Header extends React.Component<IHeaderProps> {
-  public interval: any = null;
-
-  state = {
-    currentTime: moment(),
-  };
-
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      this.setState({ currentTime: moment() });
-    }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  render() {
-    const { authData } = this.props;
-    const { user } = authData;
-    const { lastName, name, surName, division, position, sex } = user;
-    const { currentTime } = this.state;
-    const date = currentTime.format('DD.MM.YY');
-    const time = currentTime.format('HH:mm');
-    const operatingTimeType = setOperatingTimeType(currentTime);
-
-    return (
-      <Grid className={styles.noHorizontalMarginsForMobile}>
-        {/* Только ПК и планшеты */}
-        <Grid.Row
-          only="tablet computer"
-          columns={3}
-          style={{
-            paddingTop: '6px',
-            paddingBottom: '10px',
-          }}
-        >
-          <HeaderCompTabletMarkup
-            logoImage={logoImage}
-            date={date}
-            time={time}
-            operatingTimeType={operatingTimeType}
-            lastName={lastName}
-            name={name}
-            surName={surName}
-            division={division}
-            position={position}
-            sex={sex}
-          />
-        </Grid.Row>
-
-        {/* Только смартфоны */}
-        <Grid.Row
-          only="mobile"
-          columns={3}
-          style={{
-            paddingTop: '6px',
-            paddingBottom: '10px',
-          }}
-        >
-          <HeaderMobileMarkup
-            logoImage={logoImage}
-            date={date}
-            time={time}
-            operatingTimeType={operatingTimeType}
-            lastName={lastName}
-            name={name}
-            surName={surName}
-            division={division}
-            position={position}
-            sex={sex}
-          />
-        </Grid.Row>
-      </Grid>
-    );
-  }
-}
-
-export default Header;
-
-`;
-
+/**
+ * Парсинг исходного кода (.js, .ts, .tsx, .jsx) в AST дерево формата eslint
+ *
+ * @param {string} source
+ * @param {TSESTreeOptions} [options]
+ * @returns {AST<TSESTreeOptions>}
+ */
 const parseSource = (
   source: string,
   options?: TSESTreeOptions,
@@ -130,78 +43,54 @@ const parseSource = (
   }
 };
 
-const opts = {
-  range: true,
-  loc: false,
-  tokens: false,
-  comment: false,
-  useJSXTextNode: false,
-  jsx: true,
-};
-const fakeAst = parseSource(tsxData, opts);
+/**
+ * Собирает информацию об используемых SCSS классах, из указанного файла, в массив
+ *
+ * @param {string} filepath
+ */
+// TODO: Типизировать вывод функции
+const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
+  const sourceCode = fs.readFileSync(filepath, 'utf-8');
 
-// console.log(fakeAst);
+  const AST = parseSource(sourceCode, opts);
 
-const traverser = new Traverser();
-// const fakeAst = {
-//   type: 'Program',
-//   body: [
-//     {
-//       type: 'ClassDeclaration',
-//       id: {
-//         type: 'Identifier',
-//       },
-//       superClass: null,
-//       body: {
-//         type: 'ClassBody',
-//         body: [],
-//       },
-//       experimentalDecorators: [
-//         {
-//           type: 'Decorator',
-//           expression: {},
-//         },
-//       ],
-//     },
-//   ],
-// };
+  const traverser = new Traverser();
 
-// fakeAst.body[0].parent = fakeAst;
+  const visited: any[] = [];
 
-const visited = [];
+  traverser.traverse(AST, {
+    enter: (node: TSESTree.Node) => {
+      if (node.type === 'JSXAttribute') {
+        const { name } = node;
+        const { type, name: innerName } = name;
 
-// with 'visitorKeys' option to traverse decorators.
-traverser.traverse(fakeAst, {
-  enter: (node: TSESTree.Node) => {
-    if (node.type === 'JSXAttribute') {
-      const { name } = node;
-      const { type, name: innerName } = name;
+        if (type === 'JSXIdentifier' && innerName === 'className') {
+          // TODO: Собрать информаци об использованном внутри классе.
+          // IDEA: Обязательно нужно учесть использование classnames
 
-      if (type === 'JSXIdentifier' && innerName === 'className') {
-        // TODO: Собрать информаци об использованном внутри классе.
-        // IDEA: Обязательно нужно учесть использование classnames
+          // JSXExpressionContainer"
+          // "MemberExpression"
+          // "Identifier"
+          // "styles"
+          // "Identifier"
+          // "noHorizontalMarginsForMobile"
+          // false
 
-        // JSXExpressionContainer"
-        // "MemberExpression"
-        // "Identifier"
-        // "styles"
-        // "Identifier"
-        // "noHorizontalMarginsForMobile"
-        // false
-
-        console.log('NODE JSXElement=', node);
+          console.log('NODE JSXElement=', node);
+        }
       }
-    }
 
-    visited.push(node.type);
-  },
-  visitorKeys: Object.assign({}, Traverser.DEFAULT_VISITOR_KEYS, {
-    ClassDeclaration: Traverser.DEFAULT_VISITOR_KEYS.ClassDeclaration.concat([
-      'experimentalDecorators',
-    ]),
-  }),
-});
+      visited.push(node.type);
+    },
+    visitorKeys: Object.assign({}, Traverser.DEFAULT_VISITOR_KEYS, {
+      ClassDeclaration: Traverser.DEFAULT_VISITOR_KEYS.ClassDeclaration.concat([
+        'experimentalDecorators',
+      ]),
+    }),
+  });
 
-// console.log('visited=', visited);
+  // console.log('visited=', visited);
+  return visited;
+};
 
-export default parseSource;
+export default usedClassesFromTSX;
