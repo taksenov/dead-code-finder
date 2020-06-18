@@ -9,7 +9,7 @@
 import Params from './Params';
 import collectFiles from './CollectFiles';
 // import definedClassesFromSCSS from './DefinedClassesFromSCSS';
-import usedClassesFromTSX from './UsedClassesFromTSX';
+import usedClassesFromJS from './UsedClassesFromJS';
 
 const execParams = process.argv;
 const checkParams = new Params();
@@ -42,6 +42,6 @@ let tsxFilesArr: string[] = [];
 tsxFilesArr = collectFiles(inDir as string, '.tsx');
 console.log(tsxFilesArr);
 
-const selectors = usedClassesFromTSX(tsxFilesArr[0]);
+const selectors = usedClassesFromJS(tsxFilesArr[0]);
 console.log(selectors[0].imports);
 console.log(selectors[0].classes);

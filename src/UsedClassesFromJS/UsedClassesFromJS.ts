@@ -8,6 +8,23 @@ import {
 } from '@typescript-eslint/typescript-estree';
 import Traverser from 'eslint/lib/shared/traverser';
 
+interface IUsedClasses {
+  imports: IImports[];
+  classes: IClasses[];
+}
+
+interface IImports {
+  stylesFilename: string;
+  importVariable: string;
+  file: string;
+}
+
+interface IClasses {
+  usedClassName: string;
+  importStyleName: string;
+  file: string;
+}
+
 // Настройки (опции) для парсинга
 const opts = {
   range: true,
@@ -43,22 +60,21 @@ const parseSource = (
  * Собирает информацию об используемых SCSS классах, из указанного файла, в массив
  *
  * @param {string} filepath
+ * @returns {Array of interface IUsedClasses}
  */
-// TODO: Типизировать вывод функции
-// TODO: Переименовать, TSX тут не кместу, лучше JS
-const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
+const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
   const sourceCode = fs.readFileSync(filepath, 'utf-8');
-
   const AST = parseSource(sourceCode, opts);
-
   const traverser = new Traverser();
 
-  let classes: any[] = [];
-  let imports: any[] = [];
-  let usedClasses: any[] = [];
+  let classes: IClasses[] = [];
+  let imports: IImports[] = [];
+  let usedClasses: IUsedClasses[] = [];
 
+  // Посетитель всех узлов AST
   traverser.traverse(AST, {
     enter: (node: TSESTree.Node) => {
+      // Все импорты SCSS
       if (node.type === 'ImportDeclaration') {
         const { source, specifiers } = node;
         const { value = '' } = source;
@@ -75,6 +91,7 @@ const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
         }
       }
 
+      // SCSS Классы в JSX разметке
       if (node.type === 'MemberExpression') {
         const { object, property } = node;
         const { name: importStyleName } = object as TSESTree.Identifier;
@@ -105,4 +122,4 @@ const usedClassesFromTSX: (f: string) => any[] = (filepath: string) => {
   return usedClasses;
 };
 
-export default usedClassesFromTSX;
+export default usedClassesFromJS;
