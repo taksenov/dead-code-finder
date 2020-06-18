@@ -7,6 +7,7 @@
 import {
   parse as parseToTree,
   TSESTreeOptions,
+  TSESTree,
   AST,
 } from '@typescript-eslint/typescript-estree';
 
@@ -171,7 +172,7 @@ const visited = [];
 
 // with 'visitorKeys' option to traverse decorators.
 traverser.traverse(fakeAst, {
-  enter: (node: any) => {
+  enter: (node: TSESTree.Node) => {
     if (node.type === 'JSXAttribute') {
       const { name } = node;
       const { type, name: innerName } = name;
