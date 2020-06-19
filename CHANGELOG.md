@@ -1,3 +1,32 @@
+## 0.0.5 - 2020-06-19
+
+Функциональность версии основывается на следующей задаче:
+[DCP-14](https://github.com/taksenov/dead-code-finder/issues/14)
+
+Pull request: ([#15](https://github.com/taksenov/dead-code-finder/pull/15))
+
+### Добавлено
+
+- Библиотека:
+  [@typescript-eslint/parser@3.3.0](https://github.com/typescript-eslint/typescript-eslint)
+  для парсинга js, ts, jsx, tsx кода в AST
+- Библиотека:
+  [@typescript-eslint/experimental-utils@3.3.0](https://github.com/TypeStrong/ts-node)
+  для получения типов TypeScript с последущим применением для типизации
+  `shared libs` из `eslint`
+- Библиотека:
+  [@typescript-eslint/typescript-estree@3.3.0](https://github.com/typescript-eslint/typescript-eslint)
+  парсер в AST
+- Разработка: добавлен функциональный компонент
+  `src/UsedClassesFromJS/UsedClassesFromJS.ts` собирает массив с объектами с
+  информацией об импортированных SCSS файлах? а так же классах SCSS объявленных
+  в JSX разметке
+
+### Изменено
+
+- Библиотека: [eslint@6.8.0](https://github.com/eslint/eslint) перемещено в
+  раздел `dependency`, т.к. в проекте используется парсер и посетитель узлов AST
+
 ## 0.0.4 - 2020-06-17
 
 Функциональность версии основывается на следующей задаче:
