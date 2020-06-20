@@ -13,7 +13,7 @@ import usedClassesFromJS from './utils/UsedClassesFromJS';
 
 // import checkUnreachableSCSS from './rules/CheckUnreachableSCSS';
 
-import { IUsedClasses } from './models';
+import { IUsedClasses, ISelectors } from './models';
 
 const execParams = process.argv;
 const checkParams = new Params();
@@ -40,11 +40,20 @@ let tsxFilesArr: string[] = [];
 scssFilesArr = collectFiles(inDir as string, '.scss');
 // console.log(scssFilesArr);
 
-const definedSelectors = definedClassesFromSCSS(scssFilesArr[0]);
-console.log(definedSelectors);
+const definedSelectors = scssFilesArr.map((_, index) => {
+  const result = definedClassesFromSCSS(scssFilesArr[index]);
+  return result;
+});
+
+let flatDefinedSelectors: ISelectors[] = [];
+flatDefinedSelectors = definedSelectors.reduce((prev, current) => [
+  ...prev,
+  ...current,
+]);
+console.log(flatDefinedSelectors);
 
 tsxFilesArr = collectFiles(inDir as string, '.tsx');
-// console.log(tsxFilesArr);
+console.log(tsxFilesArr);
 
 let usedSelectors: IUsedClasses[] = tsxFilesArr
   .map((_, index) => {
@@ -62,7 +71,7 @@ let usedSelectors: IUsedClasses[] = tsxFilesArr
 
 // const usedSelectors = usedClassesFromJS(tsxFilesArr[0]);
 // console.log(usedSelectors[0].imports);
-// console.log(usedSelectors[0].classes);
+console.log(usedSelectors[0].classes);
 // usedSelectors.forEach((item)=> ())
 
 // console.log(usedSelectors);
