@@ -5,6 +5,14 @@ interface IUnreachableSCSS {
   unreachFiles: string[];
 }
 
+/**
+ * Правило для проверки наличия в кодовой базе SCSS файлов,
+ * которые не достижимы (не импортированы ни в одном JS файле)
+ *
+ * @param {string[]} scssFilesArr
+ * @param {IUsedClasses[]} usedSelectors
+ * @returns {IUnreachableSCSS}
+ */
 const checkUnreachableSCSS: (
   s: string[],
   c: IUsedClasses[],
