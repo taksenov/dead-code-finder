@@ -50,7 +50,7 @@ flatDefinedSelectors = definedSelectors.reduce((prev, current) => [
   ...prev,
   ...current,
 ]);
-console.log(flatDefinedSelectors);
+// console.log(flatDefinedSelectors);
 
 tsxFilesArr = collectFiles(inDir as string, '.tsx');
 console.log(tsxFilesArr);
@@ -71,7 +71,7 @@ let usedSelectors: IUsedClasses[] = tsxFilesArr
 
 // const usedSelectors = usedClassesFromJS(tsxFilesArr[0]);
 // console.log(usedSelectors[0].imports);
-console.log(usedSelectors[0].classes);
+// console.log(usedSelectors[0].classes);
 // usedSelectors.forEach((item)=> ())
 
 // console.log(usedSelectors);

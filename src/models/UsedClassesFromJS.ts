@@ -12,5 +12,6 @@ export interface IImports {
 export interface IClasses {
   usedClassName: string;
   importStyleName: string;
+  stylesFilename: string;
   sourceFile: string;
 }

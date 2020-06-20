@@ -82,12 +82,17 @@ const usedClassesFromJS: (f: string) => IUsedClasses = (filepath: string) => {
         const { name: usedClassName } = property as TSESTree.Identifier;
 
         imports.forEach(item => {
-          const { importVariable } = item;
+          const { importVariable, stylesFilename } = item;
 
           if (importStyleName === importVariable) {
             classes = [
               ...classes,
-              { usedClassName, importStyleName, sourceFile: filepath },
+              {
+                usedClassName,
+                importStyleName,
+                stylesFilename,
+                sourceFile: filepath,
+              },
             ];
           }
         });
