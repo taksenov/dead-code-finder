@@ -1,60 +1,47 @@
-import { IUsedClasses, IImports } from '../../models';
-
-interface IUnreachableSCSS {
-  unreachFilesCount: number;
-  unreachFiles: string[];
-}
+import { IUsedClasses, ISelectors } from '../../models';
 
 /**
- * Правило для проверки наличия в кодовой базе SCSS файлов,
- * которые не достижимы (не импортированы ни в одном JS файле)
+ * Правило для проверки наличия в кодовой базе классов которые объявленны в SCSS файлах,
+ * но не достижимы (не используются в JS файлах в которые импортируются их SCSS модули)
  *
- * @param {string[]} scssFilesArr
+ * @param {ISelectors[]} flatDefinedSelectors
  * @param {IUsedClasses[]} usedSelectors
  * @returns {IUnreachableSCSS}
  */
 const checkUnreachableSCSSClasses: (
-  s: string[],
+  s: ISelectors[],
   c: IUsedClasses[],
-) => IUnreachableSCSS = (
-  scssFilesArr: string[],
+) => ISelectors[] = (
+  flatDefinedSelectors: ISelectors[],
   usedSelectors: IUsedClasses[],
 ) => {
-  let unreachFilesCount = 0;
-  let unreachFiles: string[] = [];
+  let result = [...flatDefinedSelectors];
 
-  scssFilesArr.forEach(fileName => {
-    let arrMain: IImports[] = [];
+  usedSelectors.forEach(item => {
+    const { classes } = item;
 
-    usedSelectors.forEach(item => {
-      const { imports } = item;
+    classes.forEach(cls => {
+      const { usedClassName, stylesFilename } = cls;
 
-      let arr: IImports[] = [];
+      let newStylesFilename = stylesFilename.replace('../', '/');
+      newStylesFilename = newStylesFilename.replace('./', '/');
 
-      imports.forEach(imprt => {
-        const { stylesFilename } = imprt;
+      result = result.map(item => {
+        const { selector, sourceFile } = item;
 
-        let newStylesFilename = stylesFilename.replace('../', '/');
-        newStylesFilename = newStylesFilename.replace('./', '/');
-
-        if (!fileName.includes(newStylesFilename)) {
-          return;
+        if (
+          sourceFile.includes(newStylesFilename) &&
+          selector === usedClassName
+        ) {
+          return { ...item, isClassUsed: true };
         }
 
-        arr = [...arr, imprt];
+        return { ...item };
       });
-
-      arrMain = [...arrMain, ...arr];
     });
-
-    if (arrMain.length === 0) {
-      unreachFilesCount += 1;
-
-      unreachFiles = [...unreachFiles, fileName];
-    }
   });
 
-  const result = { unreachFilesCount, unreachFiles };
+  result = [...result.filter(x => !x.isClassUsed)];
 
   return result;
 };
