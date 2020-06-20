@@ -16,13 +16,13 @@ interface IUsedClasses {
 interface IImports {
   stylesFilename: string;
   importVariable: string;
-  file: string;
+  sourceFile: string;
 }
 
 interface IClasses {
   usedClassName: string;
   importStyleName: string;
-  file: string;
+  sourceFile: string;
 }
 
 // Настройки (опции) для парсинга
@@ -86,7 +86,7 @@ const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
         if (stylesFilename.includes('.scss')) {
           imports = [
             ...imports,
-            { stylesFilename, importVariable: name, file: filepath },
+            { stylesFilename, importVariable: name, sourceFile: filepath },
           ];
         }
       }
@@ -103,7 +103,7 @@ const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
           if (importStyleName === importVariable) {
             classes = [
               ...classes,
-              { usedClassName, importStyleName, file: filepath },
+              { usedClassName, importStyleName, sourceFile: filepath },
             ];
           }
         });
