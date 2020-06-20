@@ -6,30 +6,56 @@
 
 ```
 npm i
-npx ts-node ./scripts/main.ts --help
+npx ts-node ./src/main.ts --help
+```
+
+## Поддерживаемая архитектура
+
+Работает с [модульным CSS](https://github.com/css-modules/css-modules) в
+парадигме разработки предлагаемой
+[Create React App](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet)
+
+## Правила проверок
+
+Поддерживаются правила:
+
+- Правило для проверки наличия в кодовой базе SCSS файлов, которые не достижимы
+  (не импортированы ни в одном JS файле)
+- Правило для проверки наличия в кодовой базе классов которые объявленны в SCSS
+  файлах, но не достижимы (не используются в JS файлах в которые импортируются
+  их SCSS модули)
+
+## Результат работы
+
+Пример вывода в консоль:
+
+```
+ВНИМАНИЕ!
+Обнаружены не используемые SCSS файлы:
+
+/.../src/app/views/AppRouter/AppRouter.module.scss
+/.../src/app/views/Extruders/Modal/components/ModalSettings/ModalSettings.module.scss
+...
+/.../src/app/views/Workpiece/Workload/components/WorkloadForm/WorkloadForm.module.scss
+____________________________________
+
+ВНИМАНИЕ!
+Обнаружены не используемые SCSS классы:
+
+  - Селектор: inputBorder [18:1 - 24:1]
+    /.../src/app/shared/components/DateField/DateField.module.scss
+
+
+  - Селектор: noBottomPadding [30:1 - 32:1]
+    /.../src/app/shared/components/DateField/DateField.module.scss
+
+  ...
+
+  - Селектор: rightLabel [51:1 - 56:1]
+    /.../src/app/shared/components/DateField/DateField.module.scss
 ```
 
 ## Разработка
-
-### Поддерживаемая верстка в проекте
-
-- В исследуемом проекте, для верстки проекта используется препроцессор
-  Sass(SCSS). Используется подход реализующий CSS-modules. Все файлы стилей
-  должны именоваться согласно документации: `*.module.scss`. Структура файлов
-  SCSS должна быть следующей:
-
-```scss
-// MenuItem
-
-// Variables
-// =========
-
-// Selectors
-// =========
-
-// MediaQueries
-// ============
-```
 
 ### Commits
 
