@@ -6,8 +6,9 @@ interface ISelectors {
   selector: string;
   start: IPosition;
   end: IPosition;
-  file: string;
+  sourceFile: string;
   parentType: string;
+  isClassUsed: boolean;
 }
 
 interface IPosition {
@@ -43,7 +44,14 @@ const definedClassesFromSCSS: (f: string) => ISelectors[] = (
 
       selectors = [
         ...selectors,
-        { selector, start, end, parentType, file: filepath },
+        {
+          selector,
+          start,
+          end,
+          parentType,
+          sourceFile: filepath,
+          isClassUsed: false,
+        },
       ];
     }
 
