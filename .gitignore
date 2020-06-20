@@ -27,7 +27,7 @@ yarn-error.log*
 .vscode
 .VSCodeCounter
 
-# client Build     
+# client Build
 /client/build
 
 # testApp
