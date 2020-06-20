@@ -6,10 +6,14 @@
 // import * as fs from 'fs';
 // import * as path from 'path';
 
-import Params from './Params';
-import collectFiles from './CollectFiles';
-// import definedClassesFromSCSS from './DefinedClassesFromSCSS';
-import usedClassesFromJS from './UsedClassesFromJS';
+import Params from './utils/Params';
+import collectFiles from './utils/CollectFiles';
+// import definedClassesFromSCSS from './utils/DefinedClassesFromSCSS';
+import usedClassesFromJS from './utils/UsedClassesFromJS';
+
+import checkUnreachableSCSS from './rules/CheckUnreachableSCSS';
+
+import { IUsedClasses } from './models';
 
 const execParams = process.argv;
 const checkParams = new Params();
@@ -30,18 +34,44 @@ if (!inputParam.status) {
 
 const inDir = inputParam.body;
 
-// let scssFilesArr: string[] = [];
+let scssFilesArr: string[] = [];
 let tsxFilesArr: string[] = [];
 
-// scssFilesArr = collectFiles(inDir as string, '.scss');
+scssFilesArr = collectFiles(inDir as string, '.scss');
 // console.log(scssFilesArr);
 
-// const selectors = definedClassesFromSCSS(scssFilesArr[0]);
-// console.log(selectors);
+// const definedSelectors = definedClassesFromSCSS(scssFilesArr[0]);
+// console.log(definedSelectors);
 
 tsxFilesArr = collectFiles(inDir as string, '.tsx');
-console.log(tsxFilesArr);
+// console.log(tsxFilesArr);
 
-const selectors = usedClassesFromJS(tsxFilesArr[0]);
-console.log(selectors[0].imports);
-console.log(selectors[0].classes);
+let usedSelectors: IUsedClasses[] = tsxFilesArr
+  .map((_, index) => {
+    return usedClassesFromJS(tsxFilesArr[index]);
+  })
+  .filter(item => {
+    const { imports = [], classes = [] } = item;
+
+    if (imports.length > 0 && classes.length > 0) {
+      return true;
+    }
+
+    return false;
+  });
+
+// const usedSelectors = usedClassesFromJS(tsxFilesArr[0]);
+// console.log(usedSelectors[0].imports);
+// console.log(usedSelectors[0].classes);
+// usedSelectors.forEach((item)=> ())
+
+// console.log(usedSelectors);
+
+const unreachableSCSS = checkUnreachableSCSS(scssFilesArr, usedSelectors);
+const { unreachFilesCount = 0, unreachFiles = [] } = unreachableSCSS;
+if (unreachFilesCount > 0) {
+  console.warn('Внимание!');
+  console.log('Обнаружены не используемые SCSS файлы:');
+  unreachFiles.forEach(file => console.log(file));
+  console.log('____________________________________');
+}

@@ -8,22 +8,7 @@ import {
 } from '@typescript-eslint/typescript-estree';
 import Traverser from 'eslint/lib/shared/traverser';
 
-interface IUsedClasses {
-  imports: IImports[];
-  classes: IClasses[];
-}
-
-interface IImports {
-  stylesFilename: string;
-  importVariable: string;
-  file: string;
-}
-
-interface IClasses {
-  usedClassName: string;
-  importStyleName: string;
-  file: string;
-}
+import { IUsedClasses, IImports, IClasses } from '../../models';
 
 // Настройки (опции) для парсинга
 const opts = {
@@ -62,14 +47,13 @@ const parseSource = (
  * @param {string} filepath
  * @returns {Array of interface IUsedClasses}
  */
-const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
+const usedClassesFromJS: (f: string) => IUsedClasses = (filepath: string) => {
   const sourceCode = fs.readFileSync(filepath, 'utf-8');
   const AST = parseSource(sourceCode, opts);
   const traverser = new Traverser();
 
   let classes: IClasses[] = [];
   let imports: IImports[] = [];
-  let usedClasses: IUsedClasses[] = [];
 
   // Посетитель всех узлов AST
   traverser.traverse(AST, {
@@ -86,7 +70,7 @@ const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
         if (stylesFilename.includes('.scss')) {
           imports = [
             ...imports,
-            { stylesFilename, importVariable: name, file: filepath },
+            { stylesFilename, importVariable: name, sourceFile: filepath },
           ];
         }
       }
@@ -103,7 +87,7 @@ const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
           if (importStyleName === importVariable) {
             classes = [
               ...classes,
-              { usedClassName, importStyleName, file: filepath },
+              { usedClassName, importStyleName, sourceFile: filepath },
             ];
           }
         });
@@ -117,7 +101,7 @@ const usedClassesFromJS: (f: string) => IUsedClasses[] = (filepath: string) => {
     }),
   });
 
-  usedClasses = [...usedClasses, { imports, classes }];
+  let usedClasses: IUsedClasses = { imports, classes };
 
   return usedClasses;
 };
