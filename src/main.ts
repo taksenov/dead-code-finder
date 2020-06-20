@@ -6,10 +6,10 @@
 // import * as fs from 'fs';
 // import * as path from 'path';
 
-import Params from './Params';
-import collectFiles from './CollectFiles';
-import definedClassesFromSCSS from './DefinedClassesFromSCSS';
-import usedClassesFromJS from './UsedClassesFromJS';
+import Params from './utils/Params';
+import collectFiles from './utils/CollectFiles';
+import definedClassesFromSCSS from './utils/DefinedClassesFromSCSS';
+import usedClassesFromJS from './utils/UsedClassesFromJS';
 
 const execParams = process.argv;
 const checkParams = new Params();
