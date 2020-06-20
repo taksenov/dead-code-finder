@@ -8,10 +8,10 @@
 
 import Params from './utils/Params';
 import collectFiles from './utils/CollectFiles';
-// import definedClassesFromSCSS from './utils/DefinedClassesFromSCSS';
+import definedClassesFromSCSS from './utils/DefinedClassesFromSCSS';
 import usedClassesFromJS from './utils/UsedClassesFromJS';
 
-import checkUnreachableSCSS from './rules/CheckUnreachableSCSS';
+// import checkUnreachableSCSS from './rules/CheckUnreachableSCSS';
 
 import { IUsedClasses } from './models';
 
@@ -40,8 +40,8 @@ let tsxFilesArr: string[] = [];
 scssFilesArr = collectFiles(inDir as string, '.scss');
 // console.log(scssFilesArr);
 
-// const definedSelectors = definedClassesFromSCSS(scssFilesArr[0]);
-// console.log(definedSelectors);
+const definedSelectors = definedClassesFromSCSS(scssFilesArr[0]);
+console.log(definedSelectors);
 
 tsxFilesArr = collectFiles(inDir as string, '.tsx');
 // console.log(tsxFilesArr);
@@ -67,11 +67,12 @@ let usedSelectors: IUsedClasses[] = tsxFilesArr
 
 // console.log(usedSelectors);
 
-const unreachableSCSS = checkUnreachableSCSS(scssFilesArr, usedSelectors);
-const { unreachFilesCount = 0, unreachFiles = [] } = unreachableSCSS;
-if (unreachFilesCount > 0) {
-  console.warn('Внимание!');
-  console.log('Обнаружены не используемые SCSS файлы:');
-  unreachFiles.forEach(file => console.log(file));
-  console.log('____________________________________');
-}
+// // Поиск не достижимых SCSS файлов
+// const unreachableSCSS = checkUnreachableSCSS(scssFilesArr, usedSelectors);
+// const { unreachFilesCount = 0, unreachFiles = [] } = unreachableSCSS;
+// if (unreachFilesCount > 0) {
+//   console.warn('Внимание!');
+//   console.log('Обнаружены не используемые SCSS файлы:');
+//   unreachFiles.forEach(file => console.log(file));
+//   console.log('____________________________________');
+// }
