@@ -2,19 +2,7 @@ import * as fs from 'fs';
 
 import scssParse from 'postcss-scss/lib/scss-parse';
 
-interface ISelectors {
-  selector: string;
-  start: IPosition;
-  end: IPosition;
-  sourceFile: string;
-  parentType: string;
-  isClassUsed: boolean;
-}
-
-interface IPosition {
-  line: number;
-  column: number;
-}
+import { ISelectors } from '../../models';
 
 /**
  * Собрирает все SCSS классы, из указанного файла, в массив
