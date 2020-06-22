@@ -6,7 +6,7 @@ import usedClassesFromJS from './utils/UsedClassesFromJS';
 import checkUnreachableSCSS from './rules/CheckUnreachableSCSS';
 import checkUnreachableSCSSClasses from './rules/CheckUnreachableSCSSClasses';
 
-import { IUsedClasses, ISelectors } from './models';
+import { IUsedClasses } from './models';
 
 const execParams = process.argv;
 const checkParams = new Params();
@@ -32,16 +32,10 @@ let scssFilesArr: string[] = [];
 
 scssFilesArr = collectFiles(inDir as string, '.scss');
 
-const definedSelectors = scssFilesArr.map((_, index) => {
+const definedSelectors = scssFilesArr.flatMap((_, index) => {
   const result = definedClassesFromSCSS(scssFilesArr[index]);
   return result;
 });
-
-let flatDefinedSelectors: ISelectors[] = [];
-flatDefinedSelectors = definedSelectors.reduce((prev, current) => [
-  ...prev,
-  ...current,
-]);
 
 // Собрать из JS -файлов информацию обо всех импортированных SCSS файлах
 // и обо всех использованных в них SCSS className
@@ -77,7 +71,7 @@ if (unreachFilesCount > 0) {
 
 // Поиск не достижимых SCSS классов
 const unreachableSCSSClasses = checkUnreachableSCSSClasses(
-  flatDefinedSelectors,
+  definedSelectors,
   usedSelectors,
 );
 if (unreachableSCSSClasses.length > 0) {
