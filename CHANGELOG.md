@@ -1,3 +1,21 @@
+## 0.0.8 - 2020-07-20
+
+Функциональность версии основывается на следующей задаче:
+[DCP-36](https://github.com/taksenov/dead-code-finder/issues/36)
+
+Pull request: ([#38](https://github.com/taksenov/dead-code-finder/pull/38))
+
+### Обновлено
+
+- Библиотека: на основе уведомления `dependabot` обновлены следующие библиотеки:
+
+```
+    "@typescript-eslint/experimental-utils": "^3.3.0" --> "^3.6.1",
+    "@typescript-eslint/parser":             "^3.3.0" --> "^3.6.1",
+    "@typescript-eslint/typescript-estree":  "^3.3.0" --> "^3.6.1",
+    "eslint":                                "^6.8.0" --> "^7.5.0",
+```
+
 ## 0.0.8 - 2020-06-22
 
 Функциональность версии основывается на следующей задаче:
