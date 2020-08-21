@@ -5,7 +5,7 @@
  */
 interface IParamsResult {
   status: boolean;
-  body?: string;
+  body: string | null;
 }
 
 /**
@@ -30,7 +30,7 @@ class Params {
     params: string[],
     message: string,
   ) => {
-    let result: IParamsResult = { status: false, body: undefined };
+    let result: IParamsResult = { status: false, body: null };
 
     for (let i = 0, maxLength = params.length; i < maxLength; i++) {
       if (params[i].indexOf(checkParam) !== -1) {
@@ -57,11 +57,11 @@ class Params {
             result = { status: true, body: 'DELETE_INPUT_FOLDER' };
             break;
           default:
-            result = { status: false, body: undefined };
+            result = { status: false, body: null };
             break;
         }
       } else if (params[i].indexOf(checkParam) === -1) {
-        result = { status: false, body: undefined };
+        result = { status: false, body: null };
       }
     }
 
