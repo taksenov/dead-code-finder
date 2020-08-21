@@ -8,19 +8,21 @@ import checkUnreachableSCSSClasses from './rules/CheckUnreachableSCSSClasses';
 
 import { IUsedClasses } from './models';
 
+import { INPUT_PARAM, HELP_PARAM } from './constants';
+
 const execParams = process.argv;
 const checkParams = new Params();
 
-const helpParam = checkParams.handleCheckHelpParam('--help', execParams);
+const helpParam = checkParams.handleCheckHelpParam(HELP_PARAM, execParams);
 if (helpParam.status === true) {
   console.log(helpParam.body);
   process.exit();
 }
 
-const inputParam = checkParams.handleCheckWorkParams('--input=', execParams);
+const inputParam = checkParams.handleCheckWorkParams(INPUT_PARAM, execParams);
 if (!inputParam.status) {
   console.log(
-    'Не указан обязательный параметр "--input". Воспользуйтесь параметром "--help" для справки',
+    `Не указан обязательный параметр "${INPUT_PARAM}". Воспользуйтесь параметром "--help" для справки`,
   );
   process.exit();
 }
