@@ -27,20 +27,23 @@ const definedClassesFromSCSS: (f: string) => ISelectors[] = (
 
     if (parentType === 'root' || parentType === 'atrule') {
       selector = selector.replace(/\n/g, '');
-      [, selector] = selector.split('.');
+      [, selector = 'NOT_DEFINED'] = selector.split('.');
       [selector] = selector.split(' ');
 
-      selectors = [
-        ...selectors,
-        {
-          selector,
-          start,
-          end,
-          parentType,
-          sourceFile: filepath,
-          isClassUsed: false,
-        },
-      ];
+      selectors =
+        selector === 'NOT_DEFINED'
+          ? [...selectors]
+          : [
+              ...selectors,
+              {
+                selector,
+                start,
+                end,
+                parentType,
+                sourceFile: filepath,
+                isClassUsed: false,
+              },
+            ];
     }
 
     selectors = [...new Set(selectors)];
