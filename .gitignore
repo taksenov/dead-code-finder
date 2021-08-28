@@ -33,4 +33,5 @@ yarn-error.log*
 # testApp
 /testApp
 
-# /worklog
+# Program logs
+/worklog
