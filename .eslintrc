@@ -84,7 +84,8 @@
     "import/no-named-export": "off",
     "import/no-self-import": "error",
     "no-lonely-if": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "indent": "warn"
   },
   "settings": {
     "react": {
