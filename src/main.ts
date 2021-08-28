@@ -63,7 +63,7 @@ let usedSelectors: IUsedClasses[] = tsxFilesArr
 const unreachableSCSS = checkUnreachableSCSS(scssFilesArr, usedSelectors);
 const { unreachFilesCount = 0, unreachFiles = [] } = unreachableSCSS;
 if (unreachFilesCount > 0) {
-  console.warn('Внимание!'.toUpperCase());
+  console.log('Внимание!'.toUpperCase());
   console.log('Обнаружены не используемые SCSS файлы:');
   console.log(' ');
   unreachFiles.forEach(file => console.log(file));
@@ -77,7 +77,7 @@ const unreachableSCSSClasses = checkUnreachableSCSSClasses(
   usedSelectors,
 );
 if (unreachableSCSSClasses.length > 0) {
-  console.warn('Внимание!'.toUpperCase());
+  console.log('Внимание!'.toUpperCase());
   console.log('Обнаружены не используемые SCSS классы:');
   unreachableSCSSClasses.forEach(item => {
     const { selector, start, end, sourceFile } = item;
@@ -86,7 +86,6 @@ if (unreachableSCSSClasses.length > 0) {
       `  - Селектор: ${selector} [${start.line}:${start.column} - ${end.line}:${end.column}]`,
     );
     console.log(`    ${sourceFile}`);
-    console.log(' ');
   });
   console.log('____________________________________');
   console.log(' ');
